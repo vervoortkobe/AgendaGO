@@ -6,10 +6,11 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetJsonHandler(c *fiber.Ctx) error {
-	dates, err := dbactions.GetAllDates()
+func GetDateHandler(c *fiber.Ctx) error {
+	dateParam := c.Params("date")
+	date, err := dbactions.GetDate(dateParam)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
-	return c.JSON(dates)
+	return c.JSON(date)
 }

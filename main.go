@@ -27,7 +27,9 @@ func main() {
 
 	exports.App.Static("/", "./public")
 
-	exports.App.Get("/api", handlers.GetJsonHandler)
+	exports.App.Get("/api", handlers.GetAllHandler)
+
+	exports.App.Get("/api/:date", handlers.GetDateHandler)
 
 	/*app.Post("/add-date", func(c *fiber.Ctx) error {
 		var date Date

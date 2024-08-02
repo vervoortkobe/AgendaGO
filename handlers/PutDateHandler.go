@@ -7,9 +7,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func PatchDateHandler(c *fiber.Ctx) error {
+func PutDateHandler(c *fiber.Ctx) error {
 	var date exports.DateType
-
 	if err := c.BodyParser(&date); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
@@ -23,7 +22,7 @@ func PatchDateHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{"error": "Date doesn't exist"})
 	}
 
-	if err := db.UpdateDate(date); err != nil {
+	if err := db.ReplaceDate(date); err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 

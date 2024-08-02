@@ -33,9 +33,9 @@ func main() {
 
 	exports.App.Post("/api/new", handlers.PostNewDateHandler)
 
-	exports.App.Post("/api/update", handlers.PatchDateHandler)
+	exports.App.Patch("/api/update", handlers.PatchDateHandler)
 
-	exports.App.Post("/api/delete", handlers.DeleteDateHandler)
+	exports.App.Delete("/api/delete", handlers.DeleteDateHandler)
 
 	/////////////////////////////////////////////////////////////////////
 

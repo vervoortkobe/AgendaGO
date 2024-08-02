@@ -6,7 +6,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetDateHandler(c *fiber.Ctx) error {
+func PatchDateHandler(c *fiber.Ctx) error {
 	dateParam := c.Params("date")
 	date, err := db.GetDate(dateParam)
 	if err != nil {

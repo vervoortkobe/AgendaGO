@@ -1,15 +1,14 @@
-package dbactions
+package db
 
 import (
 	"agenda/exports"
 	"context"
-	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func CheckDateExists(date time.Time) (bool, error) {
+func CheckDateExists(date string) (bool, error) {
 	filter := bson.M{"date": date}
 	var result exports.DateType
 	err := exports.GetDatesColl().FindOne(context.Background(), filter).Decode(&result)

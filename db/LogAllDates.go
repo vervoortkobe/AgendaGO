@@ -1,4 +1,4 @@
-package dbactions
+package db
 
 import (
 	"fmt"

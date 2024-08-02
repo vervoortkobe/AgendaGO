@@ -1,7 +1,7 @@
 package main
 
 import (
-	"agenda/dbactions"
+	"agenda/db"
 	"agenda/exports"
 	"agenda/handlers"
 	"fmt"
@@ -23,7 +23,7 @@ func main() {
 	exports.GetMongoClient()
 	fmt.Print("💽 | Connected to MongoDB!\n")
 
-	dbactions.LogAllDates()
+	db.LogAllDates()
 
 	exports.App.Static("/", "./public")
 
@@ -31,27 +31,11 @@ func main() {
 
 	exports.App.Get("/api/:date", handlers.GetDateHandler)
 
-	/*app.Post("/add-date", func(c *fiber.Ctx) error {
-		var date Date
-		if err := c.BodyParser(&date); err != nil {
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
-		}
+	exports.App.Post("/api/new", handlers.PostNewDateHandler)
 
-		exists, err := checkDateExists(collection, date.Date)
-		if err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
-		}
+	exports.App.Post("/api/update", handlers.PatchDateHandler)
 
-		if exists {
-			return c.Status(fiber.StatusConflict).JSON(fiber.Map{"error": "Date already exists"})
-		}
-
-		if err := insertDate(collection, date); err != nil {
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
-		}
-
-		return c.Status(fiber.StatusCreated).JSON(date)
-	})*/
+	exports.App.Post("/api/delete", handlers.DeleteDateHandler)
 
 	/////////////////////////////////////////////////////////////////////
 
@@ -71,13 +55,6 @@ func main() {
 		fmt.Printf(payload.Name + ": " + payload.Email + "\n")
 		return c.JSON(payload)
 	})
-
-	/*exports.App.Post("/register", handlers.RegisterHandler)
-	exports.App.Post("/auth", handlers.AuthHandler)
-
-	exports.App.Post("/upload", handlers.UploadHandler)
-
-	exports.App.Get("/:value", handlers.ImageHostBuilder)*/
 
 	///////////////////////////////////////////////////////////////////////
 

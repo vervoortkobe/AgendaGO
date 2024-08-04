@@ -2,16 +2,14 @@ package exports
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 var App *fiber.App = fiber.New()
 
 type DateType struct {
-	ID   primitive.ObjectID `bson:"_id" json:"_id"`
-	Date string             `json:"date"`
-	Hour int                `json:"hour"`
-	Desc string             `json:"desc"`
+	Date string `json:"date"`
+	Hour int    `json:"hour"`
+	Desc string `json:"desc"`
 }
 
 ////////////////////////////////////////////////////////////

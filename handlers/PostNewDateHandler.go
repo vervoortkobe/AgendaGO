@@ -3,6 +3,7 @@ package handlers
 import (
 	"agenda/db"
 	"agenda/exports"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -26,5 +27,6 @@ func PostNewDateHandler(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
+	fmt.Print(date)
 	return c.Status(fiber.StatusCreated).JSON(date)
 }

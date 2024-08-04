@@ -8,14 +8,10 @@ import (
 var App *fiber.App = fiber.New()
 
 type DateType struct {
-	ID         primitive.ObjectID `bson:"_id" json:"_id"`
-	Date       string             `json:"date"`
-	HourlyData HourlyData         `json:"hourlyData"`
-}
-
-type HourlyData struct {
-	Hour int    `json:"hour"`
-	Data string `json:"data"`
+	ID   primitive.ObjectID `bson:"_id" json:"_id"`
+	Date string             `json:"date"`
+	Hour int                `json:"hour"`
+	Desc string             `json:"data"`
 }
 
 ////////////////////////////////////////////////////////////

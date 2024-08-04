@@ -11,7 +11,8 @@ import (
 func ReplaceDate(date exports.DateType) error {
 	replacement := bson.D{
 		{Key: "date", Value: date.Date},
-		{Key: "hourlyData", Value: date.HourlyData},
+		{Key: "hour", Value: date.Hour},
+		{Key: "desc", Value: date.Desc},
 	}
 
 	result, err := exports.GetDatesColl().ReplaceOne(context.TODO(), bson.D{{Key: "date", Value: date.Date}}, replacement)

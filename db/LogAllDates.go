@@ -13,6 +13,6 @@ func LogAllDates() {
 
 	fmt.Println("All dates in the database:")
 	for _, date := range dates {
-		fmt.Printf("Date: %v, HourlyData: %v\n", date.Date, date.HourlyData)
+		fmt.Printf("Date: %v, Hourly: %v, Desc: %v\n", date.Date, date.Hour, date.Desc)
 	}
 }

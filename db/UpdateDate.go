@@ -24,11 +24,11 @@ func UpdateDate(date exports.DateType) error {
 	if date.Date != existingDate.Date {
 		updateFields = append(updateFields, bson.E{Key: "date", Value: date.Date})
 	}
-	if date.HourlyData.Hour != existingDate.HourlyData.Hour {
-		updateFields = append(updateFields, bson.E{Key: "hourlyData.hour", Value: date.HourlyData.Hour})
+	if date.Hour != existingDate.Hour {
+		updateFields = append(updateFields, bson.E{Key: "hour", Value: date.Hour})
 	}
-	if date.HourlyData.Data != existingDate.HourlyData.Data {
-		updateFields = append(updateFields, bson.E{Key: "hourlyData.data", Value: date.HourlyData.Data})
+	if date.Desc != existingDate.Desc {
+		updateFields = append(updateFields, bson.E{Key: "desc", Value: date.Desc})
 	}
 
 	if len(updateFields) == 0 {

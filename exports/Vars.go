@@ -11,7 +11,7 @@ type DateType struct {
 	ID   primitive.ObjectID `bson:"_id" json:"_id"`
 	Date string             `json:"date"`
 	Hour int                `json:"hour"`
-	Desc string             `json:"data"`
+	Desc string             `json:"desc"`
 }
 
 ////////////////////////////////////////////////////////////

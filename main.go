@@ -31,6 +31,10 @@ func main() {
 
 	exports.App.Get("/api/:date", handlers.GetDateHandler)
 
+	exports.App.Get("/api/:year", handlers.GetYearHandler)
+
+	exports.App.Get("/api/:year/:month", handlers.GetYearMonthHandler)
+
 	exports.App.Post("/api/new", handlers.PostNewDateHandler)
 
 	exports.App.Patch("/api/update", handlers.PatchDateHandler)

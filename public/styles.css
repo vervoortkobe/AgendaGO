@@ -1,0 +1,85 @@
+#agenda {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#crud-modal {
+  animation: modalAppear 0.5s ease-in-out;
+}
+
+@keyframes modalAppear {
+  from {
+    top: -200vh;
+  }
+
+  to {
+    bottom: 0vh;
+  }
+}
+
+#controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#month-year {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+#agenda {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 10px;
+}
+
+#agenda .day {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+#agenda .day.empty {
+  background-color: #e0e0e0;
+}
+
+#agenda .day .date {
+  font-size: 1.2em;
+}
+
+.appointments {
+  position: absolute;
+  bottom: 5px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+}
+
+.appointment-dot {
+  width: 10px;
+  height: 10px;
+  background-color: red;
+  border-radius: 50%;
+}
+
+.appointment-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: bold;
+}

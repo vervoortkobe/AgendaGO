@@ -9,9 +9,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func UpdateDate(date exports.DateType) error {
+func UpdateDate(date exports.Appointment) error {
 
-	var existingDate exports.DateType
+	var existingDate exports.Appointment
 	err := exports.GetDatesColl().FindOne(context.TODO(), bson.D{{Key: "date", Value: date.Date}}).Decode(&existingDate)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {

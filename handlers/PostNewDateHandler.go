@@ -7,13 +7,17 @@ import (
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/google/uuid"
 )
 
 func PostNewDateHandler(c *fiber.Ctx) error {
-	var date exports.DateType
+	var date exports.Appointment
 	if err := c.BodyParser(&date); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
+
+	// Generate a new UUID for the appointment
+	date.Id = uuid.New().String()
 
 	// Parse the incoming date string
 	incomingDateStr := date.Date
@@ -31,7 +35,7 @@ func PostNewDateHandler(c *fiber.Ctx) error {
 	date.Date = formattedDate
 
 	// Check if the date already exists in the database
-	exists, err := db.CheckDateExists(date.Date)
+	exists, err := db.CheckAppointmentExists(date.Id)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}

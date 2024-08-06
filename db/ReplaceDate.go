@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func ReplaceDate(date exports.DateType) error {
+func ReplaceDate(date exports.Appointment) error {
 	replacement := bson.D{
 		{Key: "date", Value: date.Date},
 		{Key: "hour", Value: date.Hour},

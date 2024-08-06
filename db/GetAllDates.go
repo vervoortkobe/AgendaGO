@@ -7,16 +7,16 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func GetAllDates() ([]exports.DateType, error) {
+func GetAllDates() ([]exports.Appointment, error) {
 	cursor, err := exports.GetDatesColl().Find(context.Background(), bson.M{})
 	if err != nil {
 		return nil, err
 	}
 	defer cursor.Close(context.Background())
 
-	var dates []exports.DateType
+	var dates []exports.Appointment
 	for cursor.Next(context.Background()) {
-		var date exports.DateType
+		var date exports.Appointment
 		if err := cursor.Decode(&date); err != nil {
 			return nil, err
 		}

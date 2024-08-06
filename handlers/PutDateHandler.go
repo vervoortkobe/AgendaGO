@@ -8,12 +8,12 @@ import (
 )
 
 func PutDateHandler(c *fiber.Ctx) error {
-	var date exports.DateType
+	var date exports.Appointment
 	if err := c.BodyParser(&date); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Cannot parse JSON"})
 	}
 
-	exists, err := db.CheckDateExists(date.Date)
+	exists, err := db.CheckAppointmentExists(date.Id)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}

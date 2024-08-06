@@ -8,8 +8,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func GetDate(dateParam string) (exports.DateType, error) {
-	var date exports.DateType
+func GetDate(dateParam string) (exports.Appointment, error) {
+	var date exports.Appointment
 	err := exports.GetDatesColl().FindOne(context.TODO(), bson.D{{Key: "date", Value: dateParam}}).Decode(&date)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {

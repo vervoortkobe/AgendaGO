@@ -6,7 +6,8 @@ import (
 
 var App *fiber.App = fiber.New()
 
-type DateType struct {
+type Appointment struct {
+	Id   string `json:"id"`
 	Date string `json:"date"`
 	Hour int    `json:"hour"`
 	Desc string `json:"desc"`

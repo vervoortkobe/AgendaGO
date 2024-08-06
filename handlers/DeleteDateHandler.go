@@ -7,14 +7,14 @@ import (
 )
 
 func DeleteDateHandler(c *fiber.Ctx) error {
-	dateParam := c.Params("date")
-	exists, err := db.CheckDateExists(dateParam)
+	id := c.Params("id")
+	exists, err := db.CheckAppointmentExists(id)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
 
 	if exists {
-		result, err := db.DeleteDate(dateParam)
+		result, err := db.DeleteDate(id)
 		if err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 		}

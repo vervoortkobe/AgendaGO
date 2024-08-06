@@ -8,9 +8,9 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func CheckDateExists(date string) (bool, error) {
-	filter := bson.M{"date": date}
-	var result exports.DateType
+func CheckAppointmentExists(id string) (bool, error) {
+	filter := bson.M{"id": id}
+	var result exports.Appointment
 	err := exports.GetDatesColl().FindOne(context.Background(), filter).Decode(&result)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {

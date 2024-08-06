@@ -5,7 +5,7 @@ import (
 	"context"
 )
 
-func InsertDate(date exports.DateType) error {
+func InsertDate(date exports.Appointment) error {
 	_, err := exports.GetDatesColl().InsertOne(context.Background(), date)
 	return err
 }

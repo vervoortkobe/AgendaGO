@@ -83,37 +83,12 @@ document.querySelector("#new-date").addEventListener("click", () => {
   modal.toggle();
 });
 
-/*fetch("/api")
-  .then(function (res) {
-    return res.json();
-  })
-  .then((data) => {
-    console.log(data);
-    const dates = document.getElementById("dates");
-    data.forEach((date) => {
-      const li = document.createElement("li");
-      li.innerHTML = `
-  <a href="#" class="block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-    <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">${date.date}</h5>
-    <p class="font-normal text-gray-700 dark:text-gray-400">${date.hour} ${date.desc}</p>
-  </a>
-      `;
-      dates.appendChild(li);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-*/
-
-// Function to get the number of days in a month
+////////////////////////////////////////////////////////////////////////////////////////
 const daysInMonth = (month, year) => new Date(year, month, 0).getDate();
 
-// Function to get the day of the week of the first day of the month
 const getFirstDayOfWeek = (month, year) =>
   new Date(year, month - 1, 1).getDay();
 
-// Fetch appointments from the server
 const fetchAppointments = (year, month) => {
   return fetch(`/api/${year}/${month}`)
     .then((res) => res.json())
@@ -130,10 +105,9 @@ const fetchAppointments = (year, month) => {
     });
 };
 
-// Generate the calendar for the specified month and year
 const generateCalendar = (month, year, appointments) => {
   const agenda = document.getElementById("agenda");
-  agenda.innerHTML = ""; // Clear previous content
+  agenda.innerHTML = "";
 
   const daysInPrevMonth = daysInMonth(month - 1, year);
   const daysInCurrentMonth = daysInMonth(month, year);
@@ -143,7 +117,11 @@ const generateCalendar = (month, year, appointments) => {
   let prevMonthDayCount = daysInPrevMonth - firstDayOfWeek + 1;
   let nextMonthDayCount = 1;
 
-  // Generate days for the previous month
+  const today = new Date();
+  const todayString = `${today.getFullYear()}-${(today.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${today.getDate().toString().padStart(2, "0")}`;
+
   for (let i = 0; i < firstDayOfWeek; i++) {
     const dayElement = document.createElement("div");
     dayElement.classList.add("day", "empty");
@@ -151,10 +129,18 @@ const generateCalendar = (month, year, appointments) => {
     agenda.appendChild(dayElement);
   }
 
-  // Generate days for the current month
   for (let i = 0; i < daysInCurrentMonth; i++) {
     const dayElement = document.createElement("div");
     dayElement.classList.add("day");
+
+    const dateString = `${year}-${month.toString().padStart(2, "0")}-${dayCount
+      .toString()
+      .padStart(2, "0")}`;
+    dayElement.id = dateString; // Add ID to the day element
+
+    if (dateString === todayString) {
+      dayElement.classList.add("today"); // Highlight today's date with a red background
+    }
 
     const dateSpan = document.createElement("span");
     dateSpan.classList.add("date");
@@ -164,9 +150,6 @@ const generateCalendar = (month, year, appointments) => {
     const appointmentsContainer = document.createElement("div");
     appointmentsContainer.classList.add("appointments");
 
-    const dateString = `${year}-${month.toString().padStart(2, "0")}-${dayCount
-      .toString()
-      .padStart(2, "0")}`;
     const dayAppointments = appointments.filter(
       (app) => app.date === dateString
     );
@@ -188,11 +171,9 @@ const generateCalendar = (month, year, appointments) => {
     dayCount++;
   }
 
-  // Calculate how many days to add to complete 6 weeks (42 days total)
   const totalCells = 42;
   const daysToAdd = totalCells - (firstDayOfWeek + daysInCurrentMonth);
 
-  // Generate days for the next month to fill the week
   for (let i = 0; i < daysToAdd; i++) {
     const dayElement = document.createElement("div");
     dayElement.classList.add("day", "empty");
@@ -201,7 +182,6 @@ const generateCalendar = (month, year, appointments) => {
   }
 };
 
-// Update the calendar with new appointments
 const updateCalendar = async (year, month) => {
   const appointments = await fetchAppointments(year, month);
   generateCalendar(month, year, appointments);
@@ -225,7 +205,7 @@ const updateCalendar = async (year, month) => {
 };
 
 let currentYear = new Date().getFullYear();
-let currentMonth = new Date().getMonth() + 1; // getMonth is zero-based
+let currentMonth = new Date().getMonth() + 1;
 
 document.getElementById("prev-month").addEventListener("click", () => {
   currentMonth--;
@@ -245,27 +225,24 @@ document.getElementById("next-month").addEventListener("click", () => {
   updateCalendar(currentYear, currentMonth);
 });
 
-// Initialize the calendar
 updateCalendar(currentYear, currentMonth);
 
-// Handle form submission
 $(document).ready(function () {
   $("#date-form").on("submit", function (event) {
-    event.preventDefault(); // Prevent the form from submitting the traditional way
+    event.preventDefault();
 
     $.ajax({
       type: "POST",
-      url: "/api/new", // URL to submit the form data
-      data: $(this).serialize(), // Serialize the form data
+      url: "/api/new",
+      data: $(this).serialize(),
       success: function (response) {
-        alert("Form submitted successfully: " + response); // Handle the response from the server
-        $("#date-form")[0].reset(); // Optionally reset the form fields
+        alert("Form submitted successfully: " + response);
+        $("#date-form")[0].reset();
 
-        // Refresh the appointments for the current month
         updateCalendar(currentYear, currentMonth);
       },
       error: function (xhr, status, error) {
-        alert("An error occurred: " + error); // Handle any errors
+        alert("An error occurred: " + error);
         console.log(xhr.responseText);
         console.log(error);
       },

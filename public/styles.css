@@ -1,9 +1,3 @@
-#agenda {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 #crud-modal {
   animation: modalAppear 0.5s ease-in-out;
 }
@@ -16,6 +10,10 @@
   to {
     bottom: 0vh;
   }
+}
+
+.today {
+  background-color: green;
 }
 
 #controls {
@@ -31,16 +29,20 @@
 }
 
 #agenda {
+  justify-content: center;
+  align-items: center;
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 10px;
+  gap: 5px;
+  width: 60%;
 }
 
 #agenda .day {
   position: relative;
   width: 100px;
   height: 100px;
-  border: 1px solid #000;
+  border: 2px solid #000;
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,7 +50,8 @@
 }
 
 #agenda .day.empty {
-  background-color: #e0e0e0;
+  background-color: #353535;
+  color: white;
 }
 
 #agenda .day .date {

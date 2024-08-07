@@ -84,6 +84,7 @@ document.querySelector("#new-date").addEventListener("click", () => {
 });
 
 ////////////////////////////////////////////////////////////////////////////////////////
+
 const daysInMonth = (month, year) => new Date(year, month, 0).getDate();
 
 const getFirstDayOfWeek = (month, year) =>
@@ -169,11 +170,13 @@ const generateCalendar = (month, year, appointments) => {
     dayElement.appendChild(appointmentsContainer);
     agenda.appendChild(dayElement);
 
-    dayElement.addEventListener("mouseenter", (event) => {
-      showPopup(event, dayAppointments);
-    });
+    if (dayAppointments.length > 0) {
+      dayElement.addEventListener("mouseenter", (event) => {
+        showPopup(event, dayAppointments);
+      });
 
-    dayElement.addEventListener("mouseleave", hidePopup);
+      dayElement.addEventListener("mouseleave", hidePopup);
+    }
 
     dayCount++;
   }

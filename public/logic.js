@@ -1,90 +1,3 @@
-/* if (
-  localStorage.getItem("color-theme") === "dark" ||
-  (!("color-theme" in localStorage) &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches)
-) {
-  document.documentElement.classList.add("dark");
-} else {
-  document.documentElement.classList.remove("dark");
-}
-
-var themeToggleDarkIcon = document.getElementById("theme-toggle-dark-icon");
-var themeToggleLightIcon = document.getElementById("theme-toggle-light-icon");
-
-// Change the icons inside the button based on previous settings
-if (
-  localStorage.getItem("color-theme") === "dark" ||
-  (!("color-theme" in localStorage) &&
-    window.matchMedia("(prefers-color-scheme: dark)").matches)
-) {
-  themeToggleLightIcon.classList.remove("hidden");
-} else {
-  themeToggleDarkIcon.classList.remove("hidden");
-}
-
-var themeToggleBtn = document.getElementById("theme-toggle");
-
-themeToggleBtn.addEventListener("click", function () {
-  // toggle icons inside button
-  themeToggleDarkIcon.classList.toggle("hidden");
-  themeToggleLightIcon.classList.toggle("hidden");
-
-  // if set via local storage previously
-  if (localStorage.getItem("color-theme")) {
-    if (localStorage.getItem("color-theme") === "light") {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("color-theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("color-theme", "light");
-    }
-
-    // if NOT set via local storage previously
-  } else {
-    if (document.documentElement.classList.contains("dark")) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("color-theme", "light");
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("color-theme", "dark");
-    }
-  }
-});*/
-
-// set the modal menu element
-const $targetEl = document.getElementById("crud-modal");
-
-// options with default values
-const options = {
-  placement: "bottom-right",
-  backdrop: "dynamic",
-  backdropClasses: "bg-gray-900/50 dark:bg-gray-900/80 fixed inset-0 z-40",
-  closable: true,
-  onHide: () => {
-    console.log("modal is hidden");
-  },
-  onShow: () => {
-    console.log("modal is shown");
-  },
-  onToggle: () => {
-    console.log("modal has been toggled");
-  },
-};
-
-// instance options object
-const instanceOptions = {
-  id: "crud-modal",
-  override: true,
-};
-
-const modal = new Modal($targetEl, options, instanceOptions);
-
-document.querySelector("#new-date").addEventListener("click", () => {
-  modal.toggle();
-});
-
-////////////////////////////////////////////////////////////////////////////////////////
-
 const daysInMonth = (month, year) => new Date(year, month, 0).getDate();
 
 const getFirstDayOfWeek = (month, year) =>
@@ -98,7 +11,7 @@ const fetchAppointments = (year, month) => {
         date: item.date,
         hour: item.hour,
         desc: item.desc,
-        id: item.id, // Add ID here
+        id: item.id,
       }))
     )
     .catch((err) => {
@@ -138,10 +51,10 @@ const generateCalendar = (month, year, appointments) => {
     const dateString = `${year}-${month.toString().padStart(2, "0")}-${dayCount
       .toString()
       .padStart(2, "0")}`;
-    dayElement.id = dateString; // Add ID to the day element
+    dayElement.id = dateString;
 
     if (dateString === todayString) {
-      dayElement.classList.add("today"); // Highlight today's date with a red background
+      dayElement.classList.add("today");
     }
 
     const dateSpan = document.createElement("span");
@@ -194,12 +107,12 @@ const generateCalendar = (month, year, appointments) => {
 
 const showPopup = (event, appointments) => {
   const popup = document.getElementById("popup");
-  popup.innerHTML = ""; // Clear previous content
+  popup.innerHTML = "";
 
   appointments.forEach((appointment) => {
     const appElement = document.createElement("div");
     appElement.classList.add("appointment");
-    appElement.id = `appointment-${appointment.id}`; // Add ID to the appointment element
+    appElement.id = `appointment-${appointment.id}`;
     appElement.textContent = `${appointment.hour} - ${appointment.desc}`;
     popup.appendChild(appElement);
   });
@@ -215,7 +128,7 @@ const hidePopup = () => {
   popup.classList.remove("visible");
 };
 
-const updateCalendar = async (year, month) => {
+const updateCalendar = async (year, month, updateUrl = true) => {
   const appointments = await fetchAppointments(year, month);
   generateCalendar(month, year, appointments);
   const monthNames = [
@@ -235,10 +148,28 @@ const updateCalendar = async (year, month) => {
   document.getElementById("current-month").textContent = `${
     monthNames[month - 1]
   } ${year}`;
+
+  if (updateUrl) {
+    const newUrl = `/${year}-${month.toString().padStart(2, "0")}`;
+    history.replaceState(null, "", newUrl); // Use replaceState to avoid adding to history
+  }
 };
 
-let currentYear = new Date().getFullYear();
-let currentMonth = new Date().getMonth() + 1;
+const handleInitialUrl = () => {
+  const path = window.location.pathname;
+  const match = path.match(/^\/(\d{4})-(\d{2})$/);
+  if (match) {
+    const [, year, month] = match;
+    currentYear = parseInt(year, 10);
+    currentMonth = parseInt(month, 10);
+  } else {
+    currentYear = new Date().getFullYear();
+    currentMonth = new Date().getMonth() + 1;
+  }
+  updateCalendar(currentYear, currentMonth, false); // Do not update URL on initial load
+};
+
+handleInitialUrl();
 
 document.getElementById("prev-month").addEventListener("click", () => {
   currentMonth--;
@@ -258,8 +189,6 @@ document.getElementById("next-month").addEventListener("click", () => {
   updateCalendar(currentYear, currentMonth);
 });
 
-updateCalendar(currentYear, currentMonth);
-
 $(document).ready(function () {
   $("#date-form").on("submit", function (event) {
     event.preventDefault();
@@ -271,7 +200,6 @@ $(document).ready(function () {
       success: function (response) {
         alert("Form submitted successfully: " + response);
         $("#date-form")[0].reset();
-
         updateCalendar(currentYear, currentMonth);
       },
       error: function (xhr, status, error) {
@@ -288,3 +216,7 @@ document.getElementById("popup").addEventListener("mouseenter", () => {
 });
 
 document.getElementById("popup").addEventListener("mouseleave", hidePopup);
+
+window.addEventListener("popstate", () => {
+  handleInitialUrl();
+});

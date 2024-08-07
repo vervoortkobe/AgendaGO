@@ -31,7 +31,7 @@ func main() {
 
 	exports.App.Get("/api/:date", handlers.GetDateHandler)
 
-	exports.App.Get("/api/:year", handlers.GetYearHandler)
+	exports.App.Get("/api/year/:year", handlers.GetYearHandler)
 
 	exports.App.Get("/api/:year/:month", handlers.GetYearMonthHandler)
 
@@ -41,33 +41,27 @@ func main() {
 
 	exports.App.Delete("/api/delete", handlers.DeleteDateHandler)
 
-	/////////////////////////////////////////////////////////////////////
-
-	exports.App.Get("/t", func(c *fiber.Ctx) error {
-		return c.SendString("Hello, World!")
-	})
-
-	exports.App.Post("/post", func(c *fiber.Ctx) error {
-		payload := struct {
-			Name  string `json:"name"`
-			Email string `json:"email"`
-		}{}
-
-		if err := c.BodyParser(&payload); err != nil {
-			return err
-		}
-		fmt.Printf(payload.Name + ": " + payload.Email + "\n")
-		return c.JSON(payload)
-	})
-
-	///////////////////////////////////////////////////////////////////////
-
 	exports.App.Get("*", func(c *fiber.Ctx) error {
 		return c.Redirect("/")
 	})
 
-	///////////////////////////////////////////////////////////////////////
-
 	fmt.Printf("⚡ | WebServer listening on [http://localhost%s]!\n", PORT)
 	log.Fatal(exports.App.Listen(PORT))
 }
+
+/////////////////////////////////////////////////////////////////////
+
+/*exports.App.Post("/post", func(c *fiber.Ctx) error {
+	payload := struct {
+		Name  string `json:"name"`
+		Email string `json:"email"`
+	}{}
+
+	if err := c.BodyParser(&payload); err != nil {
+		return err
+	}
+	fmt.Printf(payload.Name + ": " + payload.Email + "\n")
+	return c.JSON(payload)
+})*/
+
+///////////////////////////////////////////////////////////////////////

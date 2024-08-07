@@ -97,6 +97,7 @@ const fetchAppointments = (year, month) => {
         date: item.date,
         hour: item.hour,
         desc: item.desc,
+        id: item.id, // Add ID here
       }))
     )
     .catch((err) => {
@@ -168,6 +169,12 @@ const generateCalendar = (month, year, appointments) => {
     dayElement.appendChild(appointmentsContainer);
     agenda.appendChild(dayElement);
 
+    dayElement.addEventListener("mouseenter", (event) => {
+      showPopup(event, dayAppointments);
+    });
+
+    dayElement.addEventListener("mouseleave", hidePopup);
+
     dayCount++;
   }
 
@@ -180,6 +187,29 @@ const generateCalendar = (month, year, appointments) => {
     dayElement.textContent = nextMonthDayCount++;
     agenda.appendChild(dayElement);
   }
+};
+
+const showPopup = (event, appointments) => {
+  const popup = document.getElementById("popup");
+  popup.innerHTML = ""; // Clear previous content
+
+  appointments.forEach((appointment) => {
+    const appElement = document.createElement("div");
+    appElement.classList.add("appointment");
+    appElement.id = `appointment-${appointment.id}`; // Add ID to the appointment element
+    appElement.textContent = `${appointment.hour} - ${appointment.desc}`;
+    popup.appendChild(appElement);
+  });
+
+  const rect = event.target.getBoundingClientRect();
+  popup.style.top = `${rect.bottom + window.scrollY}px`;
+  popup.style.left = `${rect.left + window.scrollX}px`;
+  popup.classList.add("visible");
+};
+
+const hidePopup = () => {
+  const popup = document.getElementById("popup");
+  popup.classList.remove("visible");
 };
 
 const updateCalendar = async (year, month) => {
@@ -249,3 +279,9 @@ $(document).ready(function () {
     });
   });
 });
+
+document.getElementById("popup").addEventListener("mouseenter", () => {
+  document.getElementById("popup").classList.add("visible");
+});
+
+document.getElementById("popup").addEventListener("mouseleave", hidePopup);

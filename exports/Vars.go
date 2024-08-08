@@ -9,7 +9,7 @@ var App *fiber.App = fiber.New()
 type Appointment struct {
 	Id   string `json:"id"`
 	Date string `json:"date"`
-	Hour int    `json:"hour"`
+	Hour string `json:"hour"`
 	Desc string `json:"desc"`
 }
 

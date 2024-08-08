@@ -29,7 +29,7 @@ func main() {
 
 	exports.App.Get("/api", handlers.GetAllHandler)
 
-	exports.App.Get("/api/:date", handlers.GetDateHandler)
+	exports.App.Get("/api/:id", handlers.GetAppointmentHandler)
 
 	exports.App.Get("/api/year/:year", handlers.GetYearHandler)
 

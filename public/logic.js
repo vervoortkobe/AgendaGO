@@ -128,7 +128,7 @@ const hidePopup = () => {
   popup.classList.remove("visible");
 };
 
-const updateCalendar = async (year, month, updateUrl = true) => {
+const updateCalendar = async (year, month) => {
   const appointments = await fetchAppointments(year, month);
   generateCalendar(month, year, appointments);
   const monthNames = [
@@ -149,24 +149,28 @@ const updateCalendar = async (year, month, updateUrl = true) => {
     monthNames[month - 1]
   } ${year}`;
 
-  if (updateUrl) {
-    const newUrl = `/${year}-${month.toString().padStart(2, "0")}`;
-    history.replaceState(null, "", newUrl); // Use replaceState to avoid adding to history
-  }
+  const newUrl = `/${year}-${month.toString().padStart(2, "0")}`;
+  history.replaceState(null, "", newUrl);
 };
 
 const handleInitialUrl = () => {
   const path = window.location.pathname;
   const match = path.match(/^\/(\d{4})-(\d{2})$/);
+
   if (match) {
     const [, year, month] = match;
     currentYear = parseInt(year, 10);
     currentMonth = parseInt(month, 10);
+    updateCalendar(currentYear, currentMonth);
   } else {
     currentYear = new Date().getFullYear();
     currentMonth = new Date().getMonth() + 1;
+    // Redirect to the current month if no month is provided in the URL
+    const redirectUrl = `/${currentYear}-${currentMonth
+      .toString()
+      .padStart(2, "0")}`;
+    window.location.replace(redirectUrl);
   }
-  updateCalendar(currentYear, currentMonth, false); // Do not update URL on initial load
 };
 
 handleInitialUrl();

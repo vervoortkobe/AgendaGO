@@ -41,8 +41,10 @@ func main() {
 
 	exports.App.Delete("/api/delete", handlers.DeleteDateHandler)
 
+	exports.App.Get("/:year-:month", handlers.GetMonthHandler)
+
 	exports.App.Get("*", func(c *fiber.Ctx) error {
-		return c.Redirect("/")
+		return c.SendFile("./public/index.html")
 	})
 
 	fmt.Printf("⚡ | WebServer listening on [http://localhost%s]!\n", PORT)

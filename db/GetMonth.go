@@ -9,11 +9,17 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 )
 
-func GetYearMonth(year string, month string) ([]exports.Appointment, error) {
+func GetMonth(year, month string) ([]exports.Appointment, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	filter := bson.M{"date": bson.M{"$regex": fmt.Sprintf("^%s", year)}}
+	if len(month) == 1 {
+		month = "0" + month
+	}
+
+	pattern := fmt.Sprintf("^%s-%s", year, month)
+	filter := bson.M{"date": bson.M{"$regex": pattern}}
+
 	cur, err := exports.GetDatesColl().Find(ctx, filter)
 	if err != nil {
 		return nil, err

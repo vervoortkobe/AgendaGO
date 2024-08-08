@@ -6,10 +6,9 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetYearMonthHandler(c *fiber.Ctx) error {
-	yearParam := c.Params("year")
-	monthParam := c.Params("month")
-	yearMonth, err := db.GetYearMonth(yearParam, monthParam)
+func GetDateHandler(c *fiber.Ctx) error {
+	dateParam := c.Params("date")
+	yearMonth, err := db.GetDate(dateParam)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}

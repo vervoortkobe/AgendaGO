@@ -1,18 +1,17 @@
 package handlers
 
 import (
-	"strconv"
+	"agenda/db"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func GetMonthHandler(c *fiber.Ctx) error {
-	year := c.Params("year")
-	month := c.Params("month")
-	if _, err := strconv.Atoi(year); err == nil {
-		if _, err := strconv.Atoi(month); err == nil {
-			return c.SendFile("./public/index.html")
-		}
+	yearParam := c.Params("year")
+	monthParam := c.Params("month")
+	yearMonth, err := db.GetMonth(yearParam, monthParam)
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": err.Error()})
 	}
-	return c.Redirect("/")
+	return c.JSON(yearMonth)
 }

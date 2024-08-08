@@ -29,11 +29,13 @@ func main() {
 
 	exports.App.Get("/api", handlers.GetAllHandler)
 
-	exports.App.Get("/api/:id", handlers.GetAppointmentHandler)
+	exports.App.Get("/api/:date", handlers.GetDateHandler)
+
+	exports.App.Get("/api/appointment/:id", handlers.GetAppointmentHandler)
 
 	exports.App.Get("/api/year/:year", handlers.GetYearHandler)
 
-	exports.App.Get("/api/:year/:month", handlers.GetYearMonthHandler)
+	exports.App.Get("/api/:year/:month", handlers.GetMonthHandler)
 
 	exports.App.Post("/api/new", handlers.PostNewDateHandler)
 
@@ -41,7 +43,7 @@ func main() {
 
 	exports.App.Delete("/api/delete", handlers.DeleteDateHandler)
 
-	exports.App.Get("/:year-:month", handlers.GetMonthHandler)
+	exports.App.Get("/:year-:month", handlers.GetUrlHandler)
 
 	exports.App.Get("*", func(c *fiber.Ctx) error {
 		return c.SendFile("./public/index.html")
